@@ -20,6 +20,7 @@ import { projectsActions } from '../../actions';
 import { projectService } from '../../services/project.service';
 import { projectSelectors } from '../../selectors';
 import {EMPTY} from 'rxjs';
+import { IProject } from '../../models';
 
 export const renameProjectEpic: Epic = (action$: any, state$: any) => action$.pipe(
     ofType(projectsActions.RENAME_PROJECT),
@@ -41,11 +42,14 @@ export const renameProjectEpic: Epic = (action$: any, state$: any) => action$.pi
             })
                 .pipe(
                     switchMap(() => projectService.getProjectById(project.id)),
-                    map(projectsActions.updateProjectSuccess),
+                    map((updatedProject: IProject) => {
+                        document.title = `${updatedProject.name} | Ethereum Studio`;
+                        return projectsActions.updateProjectSuccess(updatedProject);
+                    }),
+                    catchError(err => [projectsActions.renameProjectFail(err)])
                 );
         } else {
             return EMPTY;
         }
     }),
-    catchError(err => [projectsActions.renameProjectFail(err)])
 );

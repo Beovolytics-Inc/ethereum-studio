@@ -26,16 +26,7 @@ export function getFileCode(files: IProjectItem[], name: string) {
     return file.code as string;
 }
 
-// TODO - Make sure the above function is actually functional
-// export function getFileCode(files: IProjectItem[], name: string) {
-//     const file = files.find(f => f.name.toLowerCase() === name.toLowerCase());
-//     if (!file) {
-//         return '';
-//     }
-//     return file.code as string;
-// }
-
-export function createDeployFile(buildFiles: IProjectItem[], contractArgs: any[]): string {
+export function createDeployFile(web3: any, buildFiles: IProjectItem[], contractArgs: any[]): string {
     let parsedABI;
     try {
         // TODO: think of passing contract name!
@@ -45,11 +36,11 @@ export function createDeployFile(buildFiles: IProjectItem[], contractArgs: any[]
     }
 
     const binFileCode = getFileCode(buildFiles, '.bin');
-    const contract = window.web3.eth.contract(parsedABI);
+    const contract = web3.eth.contract(parsedABI);
     const args = contractArgs.concat([{ data: binFileCode }]);
 
     let deployFileCode = null;
-    let error;
+    let error = '';
 
     try {
         deployFileCode = contract.new.getData.apply(contract, args);
@@ -64,16 +55,16 @@ export function createDeployFile(buildFiles: IProjectItem[], contractArgs: any[]
     return deployFileCode;
 }
 
-export function signTransaction(address: string, nonce: any, gasSettings: any, key: string, deployFile: string) {
+export function signTransaction(address: string, nonce: any, gasSettings: any, key: string, data: string, to?: string, value?: string) {
     const tx = new Tx({
         from: address,
-        to: '',
+        to: to ? to : '',
         // chainId: 333,
-        value: '0x0',
+        value: value ? value : '0x0',
         nonce,
         gasPrice: gasSettings.gasPrice,
         gasLimit: gasSettings.gasLimit,
-        data: deployFile,
+        data,
     });
     tx.sign(Buffer.Buffer.from(key, 'hex'));
     return tx;

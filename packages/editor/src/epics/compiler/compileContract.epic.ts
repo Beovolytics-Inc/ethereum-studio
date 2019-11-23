@@ -14,38 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Superblocks Lab.  If not, see <http://www.gnu.org/licenses/>.
 
-import { from, interval, concat, of } from 'rxjs';
-import { switchMap, first } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { switchMap, withLatestFrom } from 'rxjs/operators';
 import { ofType, Epic } from 'redux-observable';
-import { explorerActions, compilerActions, panelsActions } from '../../actions';
-import { compilerService } from '../../services';
-import { Panels } from '../../models/state';
-
-function compileContract(compilerState: any) {
-    return from(
-        new Promise((resolve) => {
-            compilerService.queue(
-                { input: JSON.stringify(compilerState.input), files: compilerState.files },
-                (data: any) => resolve(compilerActions.handleCompileOutput(JSON.parse(data)))
-            );
-        })
-    );
-}
+import { explorerActions, compilerActions, projectsActions } from '../../actions';
+import { IPane } from '../../models/state';
+import { explorerSelectors, panesSelectors } from '../../selectors';
 
 export const compileContractsEpic: Epic = (action$: any, state$: any) => action$.pipe(
     ofType(explorerActions.COMPILE_CONTRACT),
-    switchMap(() => {
-        compilerService.init();
+    withLatestFrom(state$),
+    switchMap(([action]) => {
 
-        return concat(
-            of(panelsActions.openPanel(Panels.OutputLog)), // show output
-            interval(200).pipe(
-                first(() => compilerService.isReady()), // compiler has to be ready to be able to do smth
-                switchMap(() => concat(
-                    of(compilerActions.compilerReady(compilerService.getVersion())),
-                    compileContract(state$.value.compiler)
-                ))
-            )
-        );
+        const hasUnstoredChanges = explorerSelectors.hasUnstoredChanges(state$.value);
+
+        const panes = panesSelectors.getPanes(state$.value);
+        const hasUnsavedChanges = panes.reduce((acc: any, curr: IPane) => {
+            if (acc === true) {
+                return true;
+            }
+            return curr.hasUnsavedChanges;
+        }, []);
+
+        if (hasUnsavedChanges || hasUnstoredChanges) {
+            return of(projectsActions.saveProject(action.data));
+        }
+
+        return of(compilerActions.initCompilation(action.data));
     })
 );

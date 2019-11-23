@@ -38,9 +38,13 @@ export class DeployRunner {
     }
 
     checkExistingDeployment(buildFiles: IProjectItem[], contractArgs: any[]): Observable<ICheckDeployResult> {
+        if (!this.currWeb3) {
+            return throwError({ msg: 'Metamask is not installed.', channel: 2, result: CheckDeployResult.CanNotDeploy });
+        }
+
         // 1. create ".deploy" file
         try {
-            this.deployFile = createDeployFile(buildFiles, contractArgs);
+            this.deployFile = createDeployFile(this.currWeb3, buildFiles, contractArgs);
         } catch (e) {
             return throwError({ msg: e.message, channel: 2, result: CheckDeployResult.CanNotDeploy });
         }
@@ -70,13 +74,14 @@ export class DeployRunner {
         }
     }
 
-    deployExternally(gasSettings: any) {
+    deployExternally(gasSettings: any, value: string) {
         gasSettings = { gasPrice: convertGas(gasSettings.gasPrice), gasLimit: convertGas(gasSettings.gasLimit) };
+        const valueFormatted = value ? convertGas(value) : value;
 
         const params = {
             from: this.account.address,
             to: '',
-            value: '0x0',
+            value: valueFormatted ? valueFormatted : '0x0',
             gasPrice: gasSettings.gasPrice,
             gasLimit: gasSettings.gasLimit,
             data: this.deployFile
@@ -94,13 +99,14 @@ export class DeployRunner {
         }));
     }
 
-    deployToBrowser(gasSettings: any, key: string): Observable<any> {
+    deployToBrowser(gasSettings: any, key: string, value: string): Observable<any> {
         gasSettings = { gasPrice: convertGas(gasSettings.gasPrice), gasLimit: convertGas(gasSettings.gasLimit) };
+        const valueFormatted = value ? convertGas(value) : value;
 
         return Observable.create((observer: Observer<any>) => {
             this.getNonce(this.account.address).then(nonce => {
                 observer.next({ channel: 1, msg: `Nonce for address ${this.account.address} is ${nonce}.` });
-                const tx = signTransaction(this.account.address, nonce, gasSettings, key, this.deployFile);
+                const tx = signTransaction(this.account.address, nonce, gasSettings, key, this.deployFile, undefined, valueFormatted);
                 observer.next({ channel: 1, msg: `Transaction signed.` });
                 observer.next({ channel: 1, msg: `Gaslimit=${gasSettings.gasLimit}, gasPrice=${gasSettings.gasPrice}.` });
                 observer.next({ channel: 1, msg: `Sending transaction to network ${this.environment.name} on endpoint ${this.environment.endpoint}...` });
@@ -112,7 +118,7 @@ export class DeployRunner {
                 observer.next(result);
                 observer.complete();
             })
-            .catch(err => observer.error({ msg: err, channel: 2 }));
+            .catch(err => observer.error({ msg: `${err}\n`, channel: 2 }));
         });
     }
 

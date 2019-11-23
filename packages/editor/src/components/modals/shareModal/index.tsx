@@ -68,15 +68,15 @@ export default class ShareModal extends React.Component<IProps, IState> {
     }
 
     getEmbedUrl = () => {
-        return `<iframe src="${this.state.shareUrl}" style="width:960px;height:500px;border:0;border-radius:4px;overflow:hidden;" allowfullscreen="allowfullscreen"></iframe>`;
+        return `<iframe src="${this.state.shareUrl}" style="width:960px;height:500px;border:0;overflow:hidden;" allowfullscreen="allowfullscreen"></iframe>`;
     }
 
     getBtnMdUrl = () => {
-        return `[![Edit Project](https://superblocks.com/static/img/open-superblocks.svg)](${this.state.shareUrl})`;
+        return `[![Edit Project](https://studio.ethereum.org/static/img/open-studio.svg)](${this.state.shareUrl})`;
     }
 
     getBtnHtmlUrl = () => {
-        return `<a href="${this.state.shareUrl}"><img alt="Edit Project" src="https://superblocks.com/static/img/open-superblocks.svg"></a>`;
+        return `<a href="${this.state.shareUrl}"><img alt="Edit Project" src="https://studio.ethereum.org/static/img/open-studio.svg"></a>`;
     }
 
     RenderOptions = () => {
@@ -98,7 +98,7 @@ export default class ShareModal extends React.Component<IProps, IState> {
                                 );
                             }
                         }
-                        onColor='#8641F2'
+                        onColor='#6CFFB8'
                         className={style.switch}
                         checkedIcon={false}
                         uncheckedIcon={false}
@@ -118,7 +118,7 @@ export default class ShareModal extends React.Component<IProps, IState> {
                                this.updateUrl();
                            }
                         }
-                        onColor='#8641F2'
+                        onColor='#6CFFB8'
                         className={style.switch}
                         checkedIcon={false}
                         uncheckedIcon={false}
@@ -137,7 +137,7 @@ export default class ShareModal extends React.Component<IProps, IState> {
                                 );
                             }
                         }
-                        onColor='#8641F2'
+                        onColor='#6CFFB8'
                         className={style.switch}
                         checkedIcon={false}
                         uncheckedIcon={false}
@@ -226,7 +226,7 @@ export default class ShareModal extends React.Component<IProps, IState> {
                             </Tooltip>
                         </button>
                     </div>
-                    <img className={style.openLabBtn} alt='Superblocks button' src={'/static/img/open-superblocks.svg'}/>
+                    <img className={style.openStudioBtn} alt='Studio button' src={'/static/img/open-studio.svg'}/>
                 </div>
             </React.Fragment>
         );

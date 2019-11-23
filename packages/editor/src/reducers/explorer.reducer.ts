@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Superblocks Lab.  If not, see <http://www.gnu.org/licenses/>.
 
-import { explorerActions, panesActions } from '../actions';
+import { explorerActions, panesActions, projectsActions } from '../actions';
 import { isValidProjectItemName } from './utils';
 import { IExplorerState, IItemNameValidation } from '../models/state';
 import { IProjectItem } from '../models';
@@ -32,7 +32,8 @@ import {
 export const initialState: IExplorerState = {
     tree: null,
     itemNameValidation: { isNameValid: false, isNotDuplicate: false },
-    lastDeletedId: null
+    lastDeletedId: null,
+    hasUnstoredChanges: false,
 };
 
 function hasNoChildWithName(parentItem: Nullable<IProjectItem>, name: string) {
@@ -287,6 +288,26 @@ export default function explorerReducer(state = initialState, action: AnyAction)
         case explorerActions.IMPORT_FILES_FAIL: {
             return { ...state };
         }
+
+        case panesActions.SET_UNSAVED_CHANGES: {
+            return {
+                ...state,
+                hasUnstoredChanges: true
+            };
+        }
+
+        case panesActions.STORE_UNSAVED_CHANGES: {
+            return {
+                ...state,
+                hasUnstoredChanges: false
+            };
+        }
+
+        case projectsActions.SAVE_PROJECT_SUCCESS:
+            return {
+                ...state,
+                tree: action.data.files
+            };
 
         default:
             return state;

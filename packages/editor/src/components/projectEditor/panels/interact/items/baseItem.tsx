@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import style from './style.less';
 import { Caret } from '../../../../common';
-import { IDeployedContract } from '../../../../../models';
+import { IDeployedContract } from '../../../../../models/state';
 import classNames from 'classnames';
 
 interface IProps {
@@ -13,7 +13,6 @@ interface IProps {
     children?: Nullable<JSX.Element> | Nullable<JSX.Element>[];
     nocaretStyle?: any;
     depth: number;
-
     onToggle?: (id: string) => void;
 }
 
@@ -37,7 +36,6 @@ export function BaseItem(props: IProps) {
         caret = (
             <Caret
                 expanded={ opened || false }
-                onClick={ onCaretClick }
             />
         );
     } else {
@@ -47,8 +45,8 @@ export function BaseItem(props: IProps) {
     }
 
     return (
-        <div className={ classNames(style.item) }>
-            <div className={style.header} style={{paddingLeft: (depth * 20)}}>
+        <div className={ classNames(style.item)}>
+            <div className={style.header} style={{paddingLeft: (depth * 20)}} onClick={ onCaretClick }>
                 <div className={ style.icons }>
                     { caret }
                     <div className={style.icon}>{ icon }</div>

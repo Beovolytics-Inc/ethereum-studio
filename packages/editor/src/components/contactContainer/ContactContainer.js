@@ -20,21 +20,19 @@ import { IconGithub, IconTwitter, IconGitter } from '../icons';
 
 export default class ContactContainer extends Component {
     render() {
-        let { appVersion } = this.props;
         return (
             <div className={style.container}>
                 <div style={{ display: "inline-block" }}>
                     <a href="https://twitter.com/ethereum" target="_blank" rel="noopener noreferrer" className={style.contactIcon} title="Ethereum' Twitter">
                         <IconTwitter />
                     </a>
-                    <a href="https://github.com/SuperblocksHQ/ethereum-studio" target="_blank" rel="noopener noreferrer" className={style.contactIcon} title="Superblocks Lab Github">
+                    <a href="https://github.com/SuperblocksHQ/ethereum-studio" target="_blank" rel="noopener noreferrer" className={style.contactIcon} title="Ethereum Studio Github">
                         <IconGithub />
                     </a>
                     <a href="https://gitter.im/ethereum/documentation" target="_blank" rel="noopener noreferrer" className={style.contactIcon} title="Documentation' Community (Gitter)">
                         <IconGitter />
                     </a>
                 </div>
-                <div className={style.version}>{appVersion}</div>
             </div>
         );
     }

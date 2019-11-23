@@ -17,30 +17,32 @@
 import React, { Component } from 'react';
 import style from './style.less';
 import { DropdownContainer } from '../common/dropdown';
-import { HelpAction, NewProjectAction } from '../common';
-import {
-    IconAlphabetA,
-} from '../icons';
-import OnlyIf from '../onlyIf';
+import { HelpAction, NewProjectAction, OnlyIf, StyledButton } from '../common';
 import NetworkAccountSelector from '../networkAccountSelector';
 import MenuDropdownDialog from './menu';
 import ProjectTitle from './projectTitle';
 import { IProject } from '../../models';
 import { ForkDropdownAction, MenuAction, PreferencesAction, ShareDropdownAction } from './actions';
 import AccountConfigModal from '../projectEditor/editors/accountConfigModal';
+import { StyledButtonType } from '../common/buttons/StyledButtonType';
+import { SimpleModal } from '../modals';
+import AboutModal from '../modals/aboutModal';
 
 interface IView {
-    showOpenInLab: boolean;
+    showOpenStudio: boolean;
     project: IProject;
+    showForkButton: boolean;
+    showShareButton: boolean;
 }
 
 interface IProps {
     selectedProjectName: string;
     selectedProjectId: string;
-    showForkButton: boolean;
     isProjectForking: boolean;
     view: IView;
     showAccountConfig: boolean;
+    showAboutModal: boolean;
+    toggleAboutModal: () => void;
     forkProject: (projectId: string, redirect: boolean) => void;
     showModal: (modalType: string, modalProps: any) => void;
     closeAccountConfigModal(): void;
@@ -49,7 +51,6 @@ export default class TopBar extends Component<IProps> {
 
     state = {
         selectedProjectName: this.props.selectedProjectName,
-        showForkButton: this.props.showForkButton,
     };
 
     componentDidUpdate(prevProps: IProps) {
@@ -69,7 +70,7 @@ export default class TopBar extends Component<IProps> {
                 showModal('PREFERENCES_MODAL', null);
                 break;
             case 'share':
-                const defaultUrl = String(window.location);
+                const defaultUrl = String(window.location.href.split('?')[0]);
                 showModal('SHARE_MODAL', { defaultUrl });
                 break;
             default:
@@ -83,10 +84,8 @@ export default class TopBar extends Component<IProps> {
     }
 
     render() {
-
-        const { showForkButton } = this.state;
-        const { project, showOpenInLab } = this.props.view;
-        const { isProjectForking, showAccountConfig, closeAccountConfigModal } = this.props;
+        const { project, showOpenStudio, showForkButton, showShareButton } = this.props.view;
+        const { isProjectForking, showAccountConfig, closeAccountConfigModal, showAboutModal, toggleAboutModal } = this.props;
 
         return (
             <div className={style.topbar}>
@@ -96,16 +95,17 @@ export default class TopBar extends Component<IProps> {
                         dropdownContent={<MenuDropdownDialog />} >
                         <MenuAction />
                     </DropdownContainer>
-                    <OnlyIf test={showOpenInLab}>
+                    <OnlyIf test={showOpenStudio}>
                         <a
-                            className={style.openLab}
+                            className={style.openStudio}
                             href={String(window.location)}
                             target='_blank'
                             rel='noopener noreferrer'
-                            title='Open in Lab'
                         >
-                            <IconAlphabetA style={{width: 17, height: 17}} />
-                            <span>Open in Lab</span>
+                            <StyledButton
+                                type={StyledButtonType.Primary}
+                                text='Open Studio'
+                            />
                         </a>
                     </OnlyIf>
                     <NetworkAccountSelector />
@@ -116,9 +116,11 @@ export default class TopBar extends Component<IProps> {
                                 isProjectForking={isProjectForking}
                             />
                         </OnlyIf>
-                        <ShareDropdownAction
-                            toggleShareModal={() => this.showModal('share')}
-                        />
+                        <OnlyIf test={showShareButton}>
+                            <ShareDropdownAction
+                                toggleShareModal={() => this.showModal('share')}
+                            />
+                        </OnlyIf>
                     </div>
                 </div>
                 <ProjectTitle
@@ -129,8 +131,13 @@ export default class TopBar extends Component<IProps> {
                     <div onClick={() => this.showModal('preferences')}>
                         <PreferencesAction />
                     </div>
-                    <HelpAction />
+                    <HelpAction openAboutModal={toggleAboutModal}/>
                 </div>
+                <OnlyIf test={showAboutModal}>
+                    <AboutModal
+                        hideModal={toggleAboutModal}
+                    />
+                </OnlyIf>
                 <OnlyIf test={showAccountConfig}>
                     <AccountConfigModal
                         hideModal={closeAccountConfigModal}

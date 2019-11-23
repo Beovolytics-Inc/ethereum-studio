@@ -25,10 +25,9 @@ export const previewActions = {
     },
 
     TRY_DOWNLOAD: 'PREVIEW.TRY_DOWNLOAD',
-    tryDownload(hasExportableContent: boolean, currentEnvironment: IEnvironment) {
+    tryDownload() {
         return {
-            type: previewActions.TRY_DOWNLOAD,
-            data: { hasExportableContent, currentEnvironment }
+            type: previewActions.TRY_DOWNLOAD
         };
     },
 
@@ -46,10 +45,10 @@ export const previewActions = {
         };
     },
 
-    TOGGLE_WEB3_ACCOUNTS: 'PREVIEW.TOGGLE_WEB3_ACCOUNTS',
-    toggleWeb3Accounts() {
+    TOGGLE_WEB3: 'PREVIEW.TOGGLE_WEB3',
+    toggleWeb3() {
         return {
-            type: previewActions.TOGGLE_WEB3_ACCOUNTS
+            type: previewActions.TOGGLE_WEB3
         };
     },
 };

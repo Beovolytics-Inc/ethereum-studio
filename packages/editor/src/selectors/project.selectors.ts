@@ -17,14 +17,15 @@ import { IAccount, IEnvironment } from '../models/state';
 import { IProject } from '../models';
 
 export const projectSelectors = {
-    getEnvironments: (state: any) => state.projects.environments,
+    // TODO enable external environments
+    getEnvironments: (state: any) => state.projects.environments.slice(0, 1).map((env: any) => env),
     getAccounts: (state: any) => state.projects.accounts,
     getSelectedEnvironment: (state: any): IEnvironment => state.projects.selectedEnvironment,
     getSelectedAccount: (state: any): IAccount => state.projects.selectedAccount,
     getProject: (state: any): IProject => state.projects.project,
     getProjectId: (state: any): string => state.projects.project.id,
     getProjectName: (state: any): string => state.projects.project.name,
-    getLoadingProject: (state: any): boolean => state.projects.loadingProject,
+    getLoadingProject: (state: any): boolean => state.projects.isProjectLoading,
     getIsOwnProject: (state: any): boolean => state.projects.isOwnProject,
     getDappFileData: (state: any): any => state.projects.dappFileData
 };

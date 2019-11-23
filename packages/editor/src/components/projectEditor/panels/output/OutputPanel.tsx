@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Superblocks Lab.  If not, see <http://www.gnu.org/licenses/>.
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import style from '../../style-console.less';
 import { IOutputLogRow } from '../../../../models/state';
@@ -26,7 +26,19 @@ interface IProps {
     clearOutputLog: () => void;
 }
 
-export function OutputPanel(props: IProps) {
+export const OutputPanel = (props: IProps) => {
+    const messagesAnchor: any = useRef(null);
+
+    const scrollToBottom = () => {
+        if (messagesAnchor !== null && messagesAnchor.current !== null) {
+            messagesAnchor.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    });
+
     return (
         <div className='scrollable-y'>
             <div className={style.console}>
@@ -39,7 +51,7 @@ export function OutputPanel(props: IProps) {
                 </div>
                 <div className={style.terminal}>
                     { props.outputRows.map((row, index) => {
-                        return row.msg.split('\n').map((line: string, lineIndex: number) => {
+                        return row.msg.toString().split('\n').map((line: string, lineIndex: number) => {
                             let cl = style.std1;
                             if (row.channel === 2) {
                                 cl = style.std2;
@@ -51,8 +63,9 @@ export function OutputPanel(props: IProps) {
                             return <div key={index + lineIndex} className={cl}>{line}</div>;
                         });
                     })}
+                    <div ref={messagesAnchor} />
                 </div>
             </div>
         </div>
     );
-}
+};

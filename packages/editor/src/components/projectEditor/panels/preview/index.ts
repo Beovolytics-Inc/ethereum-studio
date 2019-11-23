@@ -18,35 +18,35 @@ import { Preview } from './Preview';
 import { connect } from 'react-redux';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
-import { projectSelectors, previewSelectors, accountSelectors } from '../../../../selectors';
+import { projectSelectors, previewSelectors, accountsConfigSelectors } from '../../../../selectors';
 import { previewActions, transactionsActions } from '../../../../actions';
 import { TransactionType } from '../../../../models';
 
 const mapStateToProps = (state: any) => ({
-    project: projectSelectors.getProject(state),
-    disableAccounts: previewSelectors.getDisableAccounts(state),
+    isProjectLoaded: !!projectSelectors.getProject(state),
+    disableWeb3: previewSelectors.getDisableWeb3(state),
     showNoExportableContentModal: previewSelectors.getShowNoExportableContentModal(state),
     showCannotExportModal: previewSelectors.getShowCannotExportModal(state),
     showDownloadModal: previewSelectors.getShowDownloadModal(state),
     selectedEnvironment: projectSelectors.getSelectedEnvironment(state),
     selectedAccount: projectSelectors.getSelectedAccount(state),
     htmlToRender: previewSelectors.getHtmlToRender(state),
-    knownWalletSeed: accountSelectors.getKnownWalletSeed(state)
+    knownWalletSeed: accountsConfigSelectors.getKnownWalletSeed(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
     return {
-        onDownload: () => {
-            // dispatch(outputLogActions.clearOutputLog());
+        download: () => {
+            dispatch(previewActions.download());
         },
-        onTryDownload: () => {
-            // dispatch(outputLogActions.clearOutputLog());
+        tryToDownload: () => {
+            dispatch(previewActions.tryDownload());
         },
-        onToggleWeb3Accounts: () => {
-            // dispatch(outputLogActions.clearOutputLog());
+        onToggleWeb3: () => {
+            dispatch(previewActions.toggleWeb3());
         },
         onHideModals: () => {
-            // dispatch(outputLogActions.clearOutputLog());
+            dispatch(previewActions.hideModals());
         },
         notifyTx: (transactionType: TransactionType, hash: string) => {
             dispatch(transactionsActions.addTransaction(transactionType, hash));

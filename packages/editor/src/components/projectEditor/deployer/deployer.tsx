@@ -16,13 +16,11 @@
 
 import React from 'react';
 import { MainnetWarning } from './mainnetWarning';
-import OnlyIf from '../../onlyIf';
-import { SimpleModal } from '../../modals';
+import { OnlyIf } from '../../common';
 
 interface IProps {
     projectName: string;
     showMainnetWarning: boolean;
-    showExternalProviderInfo: boolean;
     hideMainnetWarning(): void;
     deployToMainnet(): void;
 }
@@ -35,13 +33,6 @@ export function Deployer(props: IProps) {
                     projectName={props.projectName}
                     onCloseClick={props.hideMainnetWarning}
                     onDeployConfirmed={props.deployToMainnet} />
-            </OnlyIf>
-            <OnlyIf test={props.showExternalProviderInfo}>
-                <SimpleModal onClose={() => null}>
-                    <h2>WARNING: Invoking external account provider</h2>
-                    <div style={{textAlign: 'center'}}>Please understand that Superblocks Lab has no power over which network is targeted
-                    when using an external provider. It is your responsibility that the network is the same as it is expected to be.</div>
-                </SimpleModal>
             </OnlyIf>
         </React.Fragment>
     );

@@ -16,8 +16,8 @@
 
 import React from 'react';
 import style from './style.less';
-import { IDeployedContract } from '../../../../models';
-import { DeployedContractItem } from './items/deployedContractItem';
+import { IDeployedContract } from '../../../../models/state';
+import { DeployedContractItem } from './items';
 
 interface IProps {
     deployedItems: IDeployedContract[];
@@ -29,6 +29,14 @@ export class InteractPanel extends React.Component<IProps> {
     render() {
         const { deployedItems, onToggleTreeItem } = this.props;
 
+        if (deployedItems.length === 0) {
+            return (
+                <div className={style.noContracts}>
+                    <p>No contracts deployed in this network</p>
+                </div>
+            );
+        }
+
         return (
             <div className={ style.treeContainer }>
                 {
@@ -37,9 +45,7 @@ export class InteractPanel extends React.Component<IProps> {
                             data={item}
                             depth={0}
                             onClick={ (i: IDeployedContract) => console.log(i.id) }
-                            onToggle={ onToggleTreeItem }>
-                            { <div>Patata</div> }
-                        </DeployedContractItem>
+                            onToggle={ onToggleTreeItem } />
                     ))
                 }
             </div>
