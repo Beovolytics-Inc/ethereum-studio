@@ -17,6 +17,7 @@
 @import './spacing';
 @import './toast';
 @import './menu';
+@import './language';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////// Variables //////////////////
@@ -149,9 +150,14 @@ a:active,a:focus {
 }
 
 .modal {
-    max-height: 100%;
-    max-width: 100%;
-    overflow: auto;
+    overflow: hidden;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translate(-50%);
+    max-height: 81%;
 }
 
 .dropDown {

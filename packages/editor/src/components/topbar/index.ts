@@ -16,7 +16,7 @@
 
 import { connect } from 'react-redux';
 import TopBar from './Topbar';
-import { viewSelectors, projectSelectors, userSelectors, accountSelectors } from '../../selectors';
+import { viewSelectors, projectSelectors, userSelectors, accountsConfigSelectors } from '../../selectors';
 import { projectsActions, modalActions, viewActions, accountActions } from '../../actions';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
@@ -24,13 +24,15 @@ import { AnyAction } from 'redux';
 const mapStateToProps = (state: any) => ({
     selectedProjectName: projectSelectors.getProjectName(state),
     selectedProjectId: projectSelectors.getProjectId(state),
-    showForkButton: userSelectors.getShowForkButton(state),
     view: {
         project: projectSelectors.getProject(state),
-        showOpenInLab: viewSelectors.getShowTopBarOpenInLab(state),
+        showOpenStudio: viewSelectors.getShowTopBarOpenInLab(state),
+        showForkButton: viewSelectors.getShowTopBarForkButton(state),
+        showShareButton: viewSelectors.getShowTopBarShareButton(state),
     },
     isProjectForking: userSelectors.isProjectForking(state),
-    showAccountConfig: accountSelectors.getShowAccountConfig(state)
+    showAccountConfig: accountsConfigSelectors.getShowAccountConfig(state),
+    showAboutModal: viewSelectors.getShowAboutModal(state)
 });
 
 function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
@@ -43,6 +45,9 @@ function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
         },
         closeAccountConfigModal: () => {
             dispatch(accountActions.closeAccountConfig());
+        },
+        toggleAboutModal: () => {
+            dispatch(viewActions.toggleAboutModal());
         }
     };
 }

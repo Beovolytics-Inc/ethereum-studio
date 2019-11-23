@@ -1,17 +1,17 @@
 # [Ethereum Studio](https://superblocks.com/ethereum-studio)
 
-[![Join the community](https://img.shields.io/badge/chat-on%20discord-7289da.svg?logo=discord)](https://discord.gg/6Cgg2Dw) [![CircleCI](https://circleci.com/gh/SuperblocksHQ/superblocks-lab.svg?style=shield)](https://circleci.com/gh/SuperblocksHQ/superblocks-lab) [![Follow in Twitter](https://img.shields.io/twitter/follow/getSuperblocks.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=GetSuperblocks)
+[![Join the community](https://img.shields.io/badge/chat-on%20discord-7289da.svg?logo=discord)](https://discord.gg/6Cgg2Dw) [![Superblocks](https://superblocks.com/d/superblocks/projects/ethereum-studio.svg?branch=master)](https://superblocks.com/d/superblocks/projects/ethereum-studio) [![Follow in Twitter](https://img.shields.io/twitter/follow/getSuperblocks.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=GetSuperblocks)
 
 
 [Ethereum Studio](https://superblocks.com/ethereum-studio) is an integrated development environment (IDE) to learn, build and deploy decentralized apps (DApps) for _Ethereum_. It's a full browser experience which requires no installations to run.
 
 <p align="center">
-  <img alt="Ethereum Studio in action" src="https://user-images.githubusercontent.com/7814134/45118436-d135c300-b158-11e8-8271-648495d35d29.png">
+  <img alt="Ethereum Studio in action" src="https://user-images.githubusercontent.com/8097623/68451252-d817f580-01a2-11ea-9084-b4ae593c56dd.png">
 </p>
 
 **Ethereum Studio** has a built in _Solidity_ compiler and _Ethereum Virtual Machine_. It also works with local and public networks.
 
-To try it out, go to [studio.superblocks.com](https://studio.superblocks.com).
+To try it out, go to [studio.ethereum.org](https://studio.ethereum.org).
 
 ## Features
 * In-browser Blockchain
@@ -58,6 +58,9 @@ Run this script to fix that for you:
 ```
 
 Consider double-checking and updating the `CHANGELOG` to reflect the changes. Tag the new version.
+
+### Modifying templates
+Templates are now located inside `./packages/editor/templates` folder. After you modify those files and want to see changes you need to run `generate-templates.js` script inside `./packages/editor/scripts`.
 
 ## Issues
 Bug reports and suggestions can be filed at the project [Issues](https://github.com/SuperblocksHQ/ethereum-studio/issues) page.

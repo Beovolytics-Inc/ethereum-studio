@@ -15,7 +15,6 @@
 // along with Superblocks Lab.  If not, see <http://www.gnu.org/licenses/>.
 
 import { connect } from 'react-redux';
-// import { getNetworkPreferences } from '../../../selectors/settings';
 import { projectSelectors } from '../../../selectors';
 import { Deployer as  DeployerComponent } from './deployer';
 import { Dispatch } from 'react';
@@ -25,7 +24,6 @@ import { deployerActions } from '../../../actions';
 const mapStateToProps = (state: any) => ({
     projectName: projectSelectors.getProjectName(state),
     showMainnetWarning: state.deployer.showMainnetWarning,
-    showExternalProviderInfo: state.deployer.showExternalProviderInfo
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {

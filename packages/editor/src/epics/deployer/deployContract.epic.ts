@@ -18,7 +18,6 @@ import { concat, of, empty, throwError } from 'rxjs';
 import { switchMap, catchError, filter, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { ofType, Epic } from 'redux-observable';
 import { outputLogActions, panelsActions } from '../../actions';
-import { IContractConfiguration, IProjectItem } from '../../models';
 import { deployerActions } from '../../actions/deployer.actions';
 import { projectSelectors } from '../../selectors';
 import { DeployRunner, CheckDeployResult } from '../../services';
@@ -35,7 +34,7 @@ export const deployContractEpic: Epic = (action$: any, state$: any) => action$.p
         // prepare params
         const deployerState = state$.value.deployer;
         if (deployerState.needsCompilation) {
-            return empty();
+            return concat(of(panelsActions.openPanel(Panels.OutputLog)), of(outputLogActions.addRows([{ msg: 'Please compile your contracts before deployment.', channel: 3 }])));
         }
 
         const environment = projectSelectors.getSelectedEnvironment(state);

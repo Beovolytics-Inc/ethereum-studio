@@ -19,6 +19,7 @@ import { FontAwesomeIcon as FaIcon } from '@fortawesome/react-fontawesome';
 import { faSync as iconRun } from '@fortawesome/free-solid-svg-icons/faSync'
 import { faSave as iconSave } from '@fortawesome/free-regular-svg-icons/faSave';
 import { faPuzzlePiece as iconCompile } from '@fortawesome/free-solid-svg-icons/faPuzzlePiece';
+import { faCode as iconCode } from '@fortawesome/free-solid-svg-icons/faCode';
 import { faCog as iconConfigure } from '@fortawesome/free-solid-svg-icons/faCog';
 import { faTrashAlt as iconTrash } from '@fortawesome/free-regular-svg-icons/faTrashAlt';
 import { faGem as iconGem } from '@fortawesome/free-regular-svg-icons/faGem';
@@ -34,9 +35,7 @@ import { faArrowDown as iconDown } from '@fortawesome/free-solid-svg-icons/faArr
 import { faLongArrowAltRight as iconRight } from '@fortawesome/free-solid-svg-icons/faLongArrowAltRight';
 import { faClone as iconClone } from '@fortawesome/free-solid-svg-icons/faClone';
 import { faUpload as iconUpload } from '@fortawesome/free-solid-svg-icons/faUpload';
-import { faExchangeAlt as iconExchangeAlt } from '@fortawesome/free-solid-svg-icons/faExchangeAlt';
 import { faCheck as iconCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
-import { faQuestionCircle as iconQuestionCircle } from '@fortawesome/free-regular-svg-icons/faQuestionCircle';
 import { faTwitter as iconTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faGithub as iconGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import { faGitter as iconGitter } from '@fortawesome/free-brands-svg-icons/faGitter';
@@ -46,8 +45,6 @@ import { faLockOpen as iconLockOpen } from '@fortawesome/free-solid-svg-icons/fa
 import { faPencilAlt as iconPencil } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 import { faArrowAltCircleDown as iconDownload } from '@fortawesome/free-regular-svg-icons/faArrowAltCircleDown';
 import { faThLarge as iconMosaic } from '@fortawesome/free-solid-svg-icons/faThLarge';
-import { faLink as iconChain } from '@fortawesome/free-solid-svg-icons/faLink';
-import { faShareAlt as iconShare } from '@fortawesome/free-solid-svg-icons/faShareAlt';
 import { faCopy as iconCopy } from '@fortawesome/free-regular-svg-icons/faCopy';
 
 class IconImg extends Component {
@@ -67,15 +64,20 @@ export const IconDeployGreen = ({ ...props }) => <IconImg src={'/static/img/icon
 export const IconAddFile = ({ ...props }) => <svg preserveAspectRatio="xMidYMid meet" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="16" height="16" style={{ verticalAlign: "middle" }}><polygon points="12,3 8,3 8,4 11,4 11,7 14,7 14,14 6,14 6,8 5,8 5,15 15,15 15,6" /><path d="M7 3.018h-2v-2.018h-1.981v2.018h-2.019v1.982h2.019v2h1.981v-2h2v-1.982z" {...props} /></svg>;
 export const IconAddFolder = ({ ...props }) => <svg preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="16" height="16" style={{ verticalAlign: "middle" }}><polygon points="9,3 8,5 8,2 6,2 6,0 2,0 2,2 0,2 0,6 2,6 2,8 2,15 16,15 16,3" /><path d="M14 4h-4.382l-1 2h-2.618v2h-3v6h12v-10h-1zm0 2h-3.882l.5-1h3.382v1z" fill="#fff" /><polygon points="7,3.018 5,3.018 5,1 3.019,1 3.019,3.018 1,3.018 1,5 3.019,5 3.019,7 5,7 5,5 7,5" fill="#fff" /><polygon points="14,5 14,6 10.118,6 10.618,5" {...props} /></svg>;
 export const IconInformation = ({ ...props }) => <IconImg src={'/static/img/icon-information.svg'} {...props} />;
+export const IconCheckCircle = ({...props}) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "middle" }} {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>;
 export const IconRun = ({ ...props }) => <FaIcon icon={iconRun} {...props} />;
 export const IconSave = () => <FaIcon icon={iconSave} />;
 export const IconCompile = () => <FaIcon icon={iconCompile} />;
+export const IconCode = () => <FaIcon size={'sm'} icon={iconCode} />;
 export const IconDeploy = ({ ...props }) => (
     <IconImg src={'/static/img/icon-deploy.svg'} {...props} />
 );
 export const IconConfigure = ({ ...props }) => <FaIcon {...props} icon={iconConfigure} />;
 export const IconInteract = ({ ...props }) => (
     <IconImg src={'/static/img/icon-interact.svg'} {...props} />
+);
+export const IconEthereum = ({ ...props }) => (
+    <IconImg src={'/static/img/img-ethereum-logo.svg'} {...props} />
 );
 export const IconTrash = () => <FaIcon icon={iconTrash} />;
 export const IconGem = () => <FaIcon icon={iconGem} />;
@@ -88,7 +90,7 @@ export const IconFolderOpen = ({ ...props }) => (
 )
 
 export const IconSuperblocks = ({ ...props }) => (
-    <IconImg src={'/static/img/img-logo.svg'} {...props} />
+    <IconImg src={'/static/img/img-logo-superblocks.svg'} {...props} />
 );
 
 export const PictureVargavintern = ({ ...props }) => (
@@ -163,9 +165,6 @@ export const IconLoader = ({ ...props }) => <svg width="16" height="16" viewBox=
 export const IconTransactions = ({ ...props }) => <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="16px" width="16px" viewBox="0 0 512 512" style={{ verticalAlign: "middle" }} {...props}><path d="M388.9 266.3c-5.1-5-5.2-13.3-.1-18.4L436 200H211c-7.2 0-13-5.8-13-13s5.8-13 13-13h224.9l-47.2-47.9c-5-5.1-5-13.3.1-18.4 5.1-5 13.3-5 18.4.1l69 70c1.1 1.2 2.1 2.5 2.7 4.1.7 1.6 1 3.3 1 5 0 3.4-1.3 6.6-3.7 9.1l-69 70c-5 5.2-13.2 5.3-18.3.3zM123.1 404.3c5.1-5 5.2-13.3.1-18.4L76.1 338H301c7.2 0 13-5.8 13-13s-5.8-13-13-13H76.1l47.2-47.9c5-5.1 5-13.3-.1-18.4-5.1-5-13.3-5-18.4.1l-69 70c-1.1 1.2-2.1 2.5-2.7 4.1-.7 1.6-1 3.3-1 5 0 3.4 1.3 6.6 3.7 9.1l69 70c5 5.2 13.2 5.3 18.3.3z" /></svg>
 export const IconMenu = ({ ...props }) => <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="32px" width="20px" viewBox="0 0 512 512" style={{ verticalAlign: "center" }} {...props}><path d="M432 176H80c-8.8 0-16-7.2-16-16s7.2-16 16-16h352c8.8 0 16 7.2 16 16s-7.2 16-16 16zM432 272H80c-8.8 0-16-7.2-16-16s7.2-16 16-16h352c8.8 0 16 7.2 16 16s-7.2 16-16 16zM432 368H80c-8.8 0-16-7.2-16-16s7.2-16 16-16h352c8.8 0 16 7.2 16 16s-7.2 16-16 16z" /></svg>
 export const IconCheckThin = ({ ...props }) => <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="14px" width="14px" viewBox="0 0 512 512" style={{ verticalAlign: "center" }} {...props}><path d="M186.301 339.893L96 249.461l-32 30.507L186.301 402 448 140.506 416 110z" /></svg>
-export const IconAlphabetA = ({ ...props }) => (
-    <IconImg src={'/static/img/icon-alphabet-a.svg'} {...props} />
-);
 export const IconPanelOutput = ({ ...props }) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="17" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="17" y1="18" x2="3" y2="18"></line></svg>;
 export const IconEventLog = ({ ...props }) => (
     <svg fill="#fff" enableBackground="new 0 0 24 24" height="12px" id="Layer_1" version="1.1" viewBox="0 0 24 24" width="12px" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M22.9,0H1.1C0.5,0,0,0.5,0,1.1v15.8C0,17.5,0.5,18,1.1,18H18l6,6V1.1C24,0.5,23.5,0,22.9,0z M22,19.2L18.8,16H2V2h20V19.2z" /></svg>

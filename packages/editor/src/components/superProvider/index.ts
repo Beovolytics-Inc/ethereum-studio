@@ -19,6 +19,7 @@ import Tx from 'ethereumjs-tx';
 import Buffer from 'buffer';
 import { evmService, walletService } from '../../services';
 import { IEnvironment, IAccount } from '../../models/state';
+import Networks from '../../networks';
 
 export default class SuperProvider {
     private readonly channelId: string;
@@ -65,11 +66,11 @@ export default class SuperProvider {
         // Send request on given endpoint
         // TODO: possibly set from and gasLimit.
         return new Promise(async (resolve, reject) => {
-            if (endpoint.toLowerCase() === 'http://superblocks-browser') {
+            if (endpoint.toLowerCase() === Networks.browser.endpoint) {
                 evmService.getProvider().sendAsync(payload, ((err: any, result: any) => {
                     if (err) {
                         console.log(err);
-                        reject('Problem calling the provider async call');
+                        reject('Problem calling the provider async call: ' + err);
                     }
                     resolve(result);
                 }));
@@ -104,19 +105,12 @@ export default class SuperProvider {
                     console.log(err);
                     reject('Problem calling the provider async call');
                 }
-                console.log(result);
                 resolve(result);
             }));
         });
     }
 
     private onMessage = async (event: any) => {
-        // There's no point checking origin here since the iframe is running it's own code already,
-        // we need to treat it as a suspect.
-        // if (event.origin !== "null") {
-        // console.log("Origin diff", event.origin);
-        // return;
-        // }
         const data = event.data;
         if (typeof data !== 'object') { return; }
         if (data.channel !== this.channelId) { return; }
@@ -156,7 +150,7 @@ export default class SuperProvider {
                 return;
             }
             if (this.selectedAccount.type === 'metamask') {
-                if (data.endpoint.toLowerCase() === 'http://superblocks-browser') {
+                if (data.endpoint.toLowerCase() === Networks.browser.endpoint) {
                     const err = 'External/Metamask account cannot be used for the in-browser blockchain.';
                     alert(err);
                     sendIframeMessage(err, null);
@@ -172,6 +166,7 @@ export default class SuperProvider {
                         sendIframeMessage(err, null);
                         return;
                     }
+                    // TODO - All this SuperProvider could actually be changed to be using Epics instead
                     // const modalData = {
                     //     title: 'WARNING: Invoking external account provider',
                     //     body:
@@ -205,13 +200,13 @@ export default class SuperProvider {
                 const wallet = await walletService.openWallet(this.selectedAccount.name, this.knownWalletSeed, null)
                     .catch((err) => console.log(err));
                 if (!wallet) {
-                    alert('Could not open wallet.');
+                    alert('Could not open the wallet.');
                     return;
                 }
 
                 const nonce = await this.getNonce(this.selectedEnvironment.endpoint, this.selectedAccount.address)
                     .catch((err) => console.log(err));
-                if (!nonce) {
+                if (nonce == null) {  // Catches both null and undefined but not 0.
                     alert('The nonce could not be fetched');
                     return;
                 }
@@ -237,18 +232,31 @@ export default class SuperProvider {
                     params: ['0x' + tx.serialize().toString('hex')],
                     id: payload.id,
                 };
-                const result = await this.send(obj3, data.endpoint);
-                sendIframeMessage(null, result);
+
+                try {
+                    const result = await this.send(obj3, data.endpoint);
+                    sendIframeMessage(null, result);
+                } catch (error) {
+                    alert(error);
+                    sendIframeMessage(error, null);
+                }
             }
+        } else if (payload.method === 'eth_accounts') {
+            sendIframeMessage(null, {id: payload.id, jsonrpc: '2.0', result: [this.selectedAccount.address]});
         } else {
-            const result = await this.send(data.payload, data.endpoint);
-            sendIframeMessage(null, result);
+            try {
+                const result = await this.send(data.payload, data.endpoint);
+                sendIframeMessage(null, result);
+            } catch (error) {
+                console.log(error);
+                sendIframeMessage(error, null);
+            }
         }
     }
 
     private getWeb3 = (endpoint: string) => {
         let provider;
-        if (endpoint.toLowerCase() === 'http://superblocks-browser') {
+        if (endpoint.toLowerCase() === Networks.browser.endpoint) {
             provider = evmService.getProvider();
         } else {
             provider = new Web3.providers.HttpProvider(endpoint);

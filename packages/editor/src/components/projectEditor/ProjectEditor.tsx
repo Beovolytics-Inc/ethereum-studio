@@ -34,12 +34,14 @@ import { OnlyIf } from '../common';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import ContractConfigModal from './editors/contractConfigModal';
+import ExternalProviderInfo from '../externalProviderInfo';
 
 interface IProps {
     panels: IPanelsState;
     selectedEnvironment: IEnvironment;
     showContractConfig: boolean;
     showTemplateModal?: boolean;
+    showExternalProviderInfo: boolean;
     showModal: (modalType: string, modalProps: any) => void;
     togglePanel(panel: Panels): void;
     closePanel(panel: Panels): void;
@@ -95,9 +97,11 @@ export class ProjectEditor extends React.Component<IProps, IState> {
                 closePanel,
                 selectedEnvironment,
                 showContractConfig,
-                closeContractConfigModal } = this.props;
+                closeContractConfigModal,
+                showExternalProviderInfo } = this.props;
 
         const { sidePanelDragging, verticalPanelDragging } = this.state;
+        const rightPanelSize = window.innerWidth < 1000 ? 280 : 500;
 
         return (
             <div className={style.projecteditor}>
@@ -156,8 +160,7 @@ export class ProjectEditor extends React.Component<IProps, IState> {
                                             <div>
                                                 <SplitterLayout
                                                     primaryIndex={0}
-                                                    secondaryMinSize={232}
-                                                    secondaryInitialSize={500}
+                                                    secondaryInitialSize={rightPanelSize}
                                                     onDragStart={() => this.toggleSidePanelDragging()}
                                                     onDragEnd={() => this.toggleSidePanelDragging()}
                                                     onSecondaryPaneSizeChange={() => null}>
@@ -181,7 +184,7 @@ export class ProjectEditor extends React.Component<IProps, IState> {
                                         </SplitterLayout>
                                         <React.Fragment>
                                             <OnlyIf test={this.isPanelOpen(Panels.MessageLog)}>
-                                                <Panel name='Message' onClose={() => closePanel(Panels.MessageLog)} dragging={verticalPanelDragging}>
+                                                <Panel name='Messages' onClose={() => closePanel(Panels.MessageLog)} dragging={verticalPanelDragging}>
                                                     <MessagesPanel />
                                                 </Panel>
                                             </OnlyIf>
@@ -222,6 +225,10 @@ export class ProjectEditor extends React.Component<IProps, IState> {
                     <ContractConfigModal
                         hideModal={closeContractConfigModal}
                     />
+                </OnlyIf>
+
+                <OnlyIf test={showExternalProviderInfo}>
+                    <ExternalProviderInfo />
                 </OnlyIf>
 
 

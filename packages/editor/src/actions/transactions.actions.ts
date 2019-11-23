@@ -18,11 +18,11 @@ import { TransactionType } from '../models';
 
 export const transactionsActions = {
     ADD_TRANSACTION: 'ADD_TRANSACTION',
-    addTransaction(transactionType: TransactionType, hash?: string, environment?: string, receipt?: any, contractName?: string, tx?: any) {
+    addTransaction(transactionType: TransactionType, hash?: string, environment?: string, receipt?: any, contractName?: string, tx?: any, contractArgs?: any[]) {
         return {
             type: transactionsActions.ADD_TRANSACTION,
             data: {
-                transactionType, hash, environment, receipt, contractName, tx
+                transactionType, hash, environment, receipt, contractName, tx, contractArgs
             }
         };
     },
@@ -42,4 +42,19 @@ export const transactionsActions = {
             data: error
         };
     },
+
+    CHECK_SENT_TRANSACTIONS: 'CHECK_SENT_TRANSACTIONS',
+    checkSentTransactions(endpoint: string, contractName: string) {
+        return {
+            type: transactionsActions.CHECK_SENT_TRANSACTIONS,
+            data: { endpoint, contractName }
+        };
+    },
+    CHECK_SENT_TRANSACTIONS_FAIL: 'CHECK_SENT_TRANSACTIONS_FAIL',
+    checkSentTransactionsFail(err: any) {
+        return {
+            type: transactionsActions.CHECK_SENT_TRANSACTIONS_FAIL,
+            data: { err }
+        };
+    }
 };

@@ -24,7 +24,6 @@ import { findContractConfiguration } from './dappfileLib';
 export const initialState: IContractConfigState = {
     showContractConfig: false,
     selectedContract: undefined,
-    otherContracts: [''],
     errorLoadingContractConfig: undefined,
 };
 
@@ -38,7 +37,6 @@ export default function contractConfigReducer(state = initialState, action: AnyA
 
             const contractSource = getItemPath(tree, file);
             const contractConfiguration = findContractConfiguration(dappFileData, contractSource);
-            const otherContracts = dappFileData.contracts.find((contract: any) => contract.source !== contractSource);
 
             return {
                 ...state,
@@ -47,10 +45,10 @@ export default function contractConfigReducer(state = initialState, action: AnyA
                     config: {
                         args: contractConfiguration.args,
                         name: contractConfiguration.name,
-                        source: contractSource
+                        source: contractSource,
+                        value: contractConfiguration.value
                     },
                 },
-                otherContracts: otherContracts ? otherContracts.map((contract: IContractConfiguration) => contract.source) : [''],
             };
         }
 

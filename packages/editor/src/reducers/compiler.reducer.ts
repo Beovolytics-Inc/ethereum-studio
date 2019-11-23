@@ -71,7 +71,7 @@ function checkForTargetContractOutputErrors(targetContractOutput: any, compilerO
     if (targetContractOutput && Object.keys(targetContractOutput.evm.bytecode.linkReferences || {}).length > 0) {
         errorRows.push({
             channel: 2,
-            msg: `[ERROR] The contract ${targetContractPathStr} references library contracts. Superblocks Lab does not yet support library contract linking, only contract imports.`,
+            msg: `[ERROR] The contract ${targetContractPathStr} references library contracts. Ethereum Studio does not yet support library contract linking, only contract imports.`,
         });
     } else if (!targetContractOutput || !targetContractOutput.metadata) {
         if (compilerOutput.contracts) {
@@ -126,7 +126,7 @@ function getCompilerInputParams(sources: any) {
 
 export default function compilerReducer(state = initialState, action: AnyAction, { explorer }: { explorer: IExplorerState }) {
     switch (action.type) {
-        case explorerActions.COMPILE_CONTRACT: {
+        case compilerActions.INIT_COMPILATION: {
             if (!explorer.tree) {
                 return state;
             }
